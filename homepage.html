@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thêm Bệnh Nhân</title>
+    <script type="module" src="./auth.js"></script>
+    <script type="text/javascript" src="https://cdn.emailjs.com/dist/email.min.js"></script>
+    <script type="text/javascript">
+      (function() {
+        emailjs.init("YOUR_USER_ID"); // Thay thế YOUR_USER_ID bằng User ID của bạn
+      })();
+    </script>
+
+    <style>
+        body {
+            padding: 30px;
+            background: linear-gradient(to right, #e2e2e2, #c9d6ff);
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        label, select, input, textarea {
+            display: block;
+            width: 100%;
+            margin: 15px 0;
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        input[type="text"], input[type="email"], textarea, select {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            width: calc(100% - 24px);
+        }
+
+        input[type="date"] {
+            max-width: 300px;
+            width: 100%;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            width: 100%;
+            margin-top: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .logout-btn {
+            background-color: #f44336; /* Red color for logout */
+            margin-top: 10px;
+        }
+
+        .logout-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #FF6347;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+            transition: opacity 0.5s;
+        }
+
+        .info-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .info-section div {
+            flex: 1;
+            text-align: left;
+            padding: 5px;
+        }
+
+        .info-section div:first-child {
+            text-align: right;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Thêm Thông Tin Bệnh Nhân</h1>
+    <!-- Instruction -->
+
+    <div class="container">
+        <h2>Vui lòng điền đầy đủ thông tin bên dưới:</h2>
+        <div class="form-container">
+            <label for="patientName">Tên Bệnh Nhân:</label>
+            <input type="text" id="patientName" required>
+
+            <label for="cccd">Số CMND/CCCD:</label>
+            <input type="text" id="cccd" required>
+
+            <label for="phoneNumber">Số điện thoại:</label>
+            <input type="text" id="phoneNumber" required>
+
+            <label for="gender">Giới Tính:</label>
+            <select id="gender" required>
+                <option value="male">Nam</option>
+                <option value="female">Nữ</option>
+                <option value="other">Khác</option>
+            </select>
+
+            <label for="dob">Ngày Sinh:</label>
+            <input type="date" id="dob" required>
+
+            <label for="occupation">Nghề Nghiệp:</label>
+            <input type="text" id="occupation" required>
+
+            <label for="address">Địa Chỉ:</label>
+            <input type="text" id="address" required>
+
+            <label for="medicalHistory">Tiền Sử Bệnh:</label>
+            <textarea id="medicalHistory" required></textarea>
+
+            <label for="currentHealth">Tình Trạng Hiện Tại:</label>
+            <textarea id="currentHealth" required></textarea>
+
+            <label for="appointmentDate">Ngày Hẹn:</label>
+            <input type="date" id="appointmentDate" required>
+
+            <label for="startTime">Giờ Bắt Đầu:</label>
+            <select id="startTime" required>
+                <option value="08:00">08:00 - 08:30</option>
+                <option value="08:30">08:30 - 09:00</option>
+                <option value="09:00">09:00 - 09:30</option>
+                <option value="09:30">09:30 - 10:00</option>
+                <option value="10:00">10:00 - 10:30</option>
+                <option value="10:30">10:30 - 11:00</option>
+                <option value="11:00">11:00 - 11:30</option>
+                <option value="11:30">11:30 - 12:00</option>
+                <option value="13:00">13:00 - 13:30</option>
+                <option value="13:30">13:30 - 14:00</option>
+                <option value="14:00">14:00 - 14:30</option>
+                <option value="14:30">14:30 - 15:00</option>
+                <option value="15:00">15:00 - 15:30</option>
+                <option value="15:30">15:30 - 16:00</option>
+                <option value="16:00">16:00 - 16:30</option>
+                <option value="16:30">16:30 - 17:00</option>
+            </select>
+
+            <button type="button" id="submitInfo">Thêm Bệnh Nhân</button>
+            <button id="logoutButton" class="logout-btn">Đăng xuất</button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initEventListeners } from './homepage.js'; 
+        initEventListeners();
+    </script>
+</body>
+</html>
